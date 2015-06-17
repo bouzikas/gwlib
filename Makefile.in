@@ -1,0 +1,54 @@
+#
+# Makefile for Kannel's GWLIB
+#
+# This file is generated through an automated process.
+#
+
+SHELL = /bin/sh
+
+BUILD  = @srcdir@
+SRCDIR = @srcdir@
+LIBDIR = @srcdir@
+OBJDIR = build
+EXCLUDE = files
+
+CC = @CC@
+RANLIB = @RANLIB@
+ARCTOOL = @LIBTOOL@
+
+SRCS    := $(shell find $(SRCDIR) -name '*.c')
+SRCDIRS := $(shell find $(SRCDIR) -name '*.c' -exec dirname {} \; | uniq)
+SRCDIRS := $(filter-out $(EXCLUDE), $(SRCDIRS))
+OBJS    := $(patsubst %.c, $(OBJDIR)/%.o, $(SRCS))
+libsrcs = $(wildcard $(SRCDIR)/*.c)
+libobjs = $(patsubst %.c, $(OBJDIR)/%.o, $(libsrcs))
+libs = libgwlib.a
+
+LIBS=@LIBS@ @LIBICONV@
+CFLAGS=-D_REENTRANT=1 -I. -Igw @CFLAGS@
+LDFLAGS=@LDFLAGS@
+
+all: buildrepo $(BUILD)
+
+$(BUILD) : $(OBJS) $(libs)
+
+$(OBJDIR)/$(LIBDIR)/%.o: $(SRCDIR)/%.c
+	$(CC) $(CFLAGS) -c $< -o $@
+
+libgwlib.a: $(libobjs)
+	$(ARCTOOL) libgwlib.a $(libobjs)
+	$(RANLIB) libgwlib.a
+
+clean:
+	find . -name "*.o" -o -name "*.i" -o -name "*.a" | xargs rm -f
+	rm -rf $(OBJDIR)
+
+buildrepo:
+	@$(call make-repo)
+
+define make-repo
+   for dir in $(SRCDIRS); \
+   do \
+	mkdir -p $(OBJDIR)/$$dir; \
+   done
+endef
