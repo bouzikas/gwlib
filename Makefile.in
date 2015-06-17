@@ -9,7 +9,8 @@ SHELL = /bin/sh
 BUILD  = @srcdir@
 SRCDIR = @srcdir@
 LIBDIR = @srcdir@
-OBJDIR = build
+BUILDIR = build
+OBJDIR = $(BUILDIR)/objs
 EXCLUDE = files
 
 CC = @CC@
@@ -22,7 +23,7 @@ SRCDIRS := $(filter-out $(EXCLUDE), $(SRCDIRS))
 OBJS    := $(patsubst %.c, $(OBJDIR)/%.o, $(SRCS))
 libsrcs = $(wildcard $(SRCDIR)/*.c)
 libobjs = $(patsubst %.c, $(OBJDIR)/%.o, $(libsrcs))
-libs = libgwlib.a
+gwlib = libgwlib.a
 
 LIBS=@LIBS@ @LIBICONV@
 CFLAGS=-D_REENTRANT=1 -I. -Igw @CFLAGS@
@@ -30,14 +31,14 @@ LDFLAGS=@LDFLAGS@
 
 all: buildrepo $(BUILD)
 
-$(BUILD) : $(OBJS) $(libs)
+$(BUILD) : $(OBJS) $(gwlib)
 
 $(OBJDIR)/$(LIBDIR)/%.o: $(SRCDIR)/%.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
 libgwlib.a: $(libobjs)
-	$(ARCTOOL) libgwlib.a $(libobjs)
-	$(RANLIB) libgwlib.a
+	$(ARCTOOL) $(BUILDIR)/$(gwlib) $(libobjs)
+	$(RANLIB) $(BUILDIR)/$(gwlib)
 
 clean:
 	find . -name "*.o" -o -name "*.i" -o -name "*.a" | xargs rm -f
@@ -47,8 +48,11 @@ buildrepo:
 	@$(call make-repo)
 
 define make-repo
-   for dir in $(SRCDIRS); \
-   do \
-	mkdir -p $(OBJDIR)/$$dir; \
-   done
+for dir in $(SRCDIRS); \
+do \
+mkdir -p $(OBJDIR)/$$dir; \
+mkdir -p $(BUILDIR)/$$dir; \
+cp -P $$dir/*.h $(BUILDIR)/$$dir; \
+cp -P gw-config.h $(BUILDIR); \
+done
 endef

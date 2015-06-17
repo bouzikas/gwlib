@@ -15,6 +15,22 @@ $ ./configure
 $ make
 ```
 
+### Build hierarchy
+```
+├── build/
+│   ├── gw-config.h
+│   ├── libgwlib.a
+│   ├── gwlib
+│   │   ├── accesslog.h
+│   │   ├── cfg.h
+│   │   ├── .....
+│   ├── objs
+│   │   ├── gwlib
+│   │   │   ├── accesslog.o
+│   │   │   ├── cfg.o
+│   │   │   ├── .....
+```
+
 # Licence
 The Kannel Software License, Version 1.0 
 

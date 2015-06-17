@@ -8,3 +8,4 @@ files
 .o
 build
 libgwlib.xcodeproj
+.DS_Store
