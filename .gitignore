@@ -4,8 +4,8 @@ config.nice
 config.status
 gw-config.h
 files
-.a
-.o
+*.a
+*.o
 build
 libgwlib.xcodeproj
-.DS_Store
+*.DS_Store*
