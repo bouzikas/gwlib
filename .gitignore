@@ -3,6 +3,7 @@ Makefile
 config.nice
 config.status
 gw-config.h
+gwlib/gw_uuid_types.h
 files
 *.a
 *.o
