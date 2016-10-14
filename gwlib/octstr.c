@@ -1575,6 +1575,30 @@ error:
     return NULL;
 }
 
+long octstr_write_data_to_file_real(Octstr *data, const char *filename, const char *mode)
+{
+	FILE *f;
+	Octstr *os;
+	char buf[4096];
+	long n;
+	
+	gw_assert(filename != NULL);
+	
+	f = fopen(filename, mode);
+	if (f == NULL) {
+		error(errno, "fopen failed: couldn't open `%s'", filename);
+		return -1;
+	}
+	
+	n = fwrite(octstr_get_cstr(data), 1, octstr_len(data), f);
+	
+	(void) fclose(f);
+	return n;
+	
+error:
+	(void) fclose(f);
+	return -1;
+}
 
 Octstr *octstr_read_pipe(FILE *f)
 {

@@ -519,6 +519,17 @@ void octstr_delete(Octstr *ostr1, long pos, long len);
  */
 Octstr *octstr_read_file(const char *filename);
 
+/*
+ * Writes/Appends the contents of data into the file. Returns the total number
+ * of elements successfully written
+ */
+long octstr_write_data_to_file_real(Octstr *data, const char *filename, const char *mode);
+
+#define octstr_write_data_to_file(data, filename) \
+	(octstr_write_data_to_file_real(data, filename, "w"))
+
+#define octstr_append_data_to_file(data, filename) \
+	(octstr_write_data_to_file_real(data, filename, "a+"))
 
 /*
  * Read the contents of a file descriptor pipe to an octet string. 
