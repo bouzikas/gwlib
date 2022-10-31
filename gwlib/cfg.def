@@ -180,6 +180,20 @@ SINGLE_GROUP(sqlbox,
     OCTSTR(message-table)
 )
 
+MULTI_GROUP(ws-observer,
+    OCTSTR(id)
+    OCTSTR(type)
+    OCTSTR(name)
+    OCTSTR(table)
+    OCTSTR(column)
+    OCTSTR(column-value)
+    OCTSTR(channel-id)
+    OCTSTR(column-identifier)
+    OCTSTR(column-observe-0)
+    OCTSTR(column-observe-1)
+    OCTSTR(column-observe-2)
+)
+
 MULTI_GROUP(pn-transporter,
     OCTSTR(id)
     OCTSTR(admin-id)
@@ -187,6 +201,7 @@ MULTI_GROUP(pn-transporter,
     OCTSTR(url)
     OCTSTR(type)
     OCTSTR(reconnect-delay)
+    OCTSTR(throughput)
     OCTSTR(refresh-token-interval)
     OCTSTR(private-key-file)
     OCTSTR(kid)
