@@ -66,6 +66,9 @@
 #ifdef HAVE_MYSQL
 #include <mysql.h>
 
+#if defined(__APPLE__)
+unsigned long my_bool;
+#endif
 
 static void *mysql_open_conn(const DBConf *db_conf)
 {
